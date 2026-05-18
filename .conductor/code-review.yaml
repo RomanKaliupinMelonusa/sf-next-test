@@ -1,0 +1,31 @@
+workflow:
+    name: code-review
+    description: Review code changes for this storefront project
+    entry_point: reviewer
+    input:
+        files:
+            type: string
+            description: Files or directories to review
+
+agents:
+    - name: reviewer
+      model: gpt-5.2
+      prompt: |
+          Review the following code for:
+          - Performance issues (unnecessary re-renders, missing Suspense boundaries)
+          - Security vulnerabilities
+          - Adherence to project conventions (Tailwind, design tokens, site-context-aware navigation)
+          - Data loading patterns (server loaders only, no client-side fetching for initial data)
+
+          Files to review: {{ workflow.input.files }}
+      output:
+          summary:
+              type: string
+          issues:
+              type: string
+      routes:
+          - to: $end
+
+output:
+    summary: '{{ reviewer.output.summary }}'
+    issues: '{{ reviewer.output.issues }}'

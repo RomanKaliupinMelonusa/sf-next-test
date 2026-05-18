@@ -5,14 +5,18 @@
         "memory": "12gb"
     },
     "features": {
-        "ghcr.io/devcontainers/features/github-cli:1": {}
+        "ghcr.io/devcontainers/features/github-cli:1": {},
+        "ghcr.io/devcontainers/features/python:1": {
+            "version": "3.12"
+        }
     },
-    "postCreateCommand": "sudo corepack enable && pnpm install",
-    "forwardPorts": [5173, 6006, 24678],
+    "postCreateCommand": "sudo corepack enable && pnpm install && curl -sSfL https://aka.ms/conductor/install.sh | sh && uv tool install specify-cli --from git+https://github.com/github/spec-kit.git@v0.8.11",
+    "forwardPorts": [5173, 6006, 24678, 8080],
     "portsAttributes": {
         "5173": { "label": "Dev Server", "onAutoForward": "notify" },
         "6006": { "label": "Storybook", "onAutoForward": "notify" },
-        "24678": { "label": "Vite HMR", "onAutoForward": "silent" }
+        "24678": { "label": "Vite HMR", "onAutoForward": "silent" },
+        "8080": { "label": "Conductor Dashboard", "onAutoForward": "notify" }
     },
     "customizations": {
         "vscode": {
